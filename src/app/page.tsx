@@ -39,7 +39,7 @@ export default async function HomePage() {
           <Link href="/record" className={styles.heroLink}>Enter the record <span>→</span></Link>
         </div>
         <div className={styles.heroImageWrap}>
-          <img src="/glass-person.png" alt="Blurred figure behind frosted glass" className={styles.heroImage} />
+          <img src="/personbehind.png" alt="Blurred figure behind frosted glass" className={styles.heroImage} />
         </div>
       </div>
       <div className={styles.heroMeta}><span className={styles.heroBadge}>N</span><p>Truth is shared. Judgment is personal.</p></div>
