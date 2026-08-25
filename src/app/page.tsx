@@ -39,13 +39,14 @@ export default async function HomePage() {
     .limit(5);
 
   const cases = (data ?? []) as FeaturedCase[];
+  const preview = cases[0];
 
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
         <Header dark />
 
-        <div className={styles.heroGrid}>
+        <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
             <h1>
               SEE EVERYTHING.
@@ -59,7 +60,7 @@ export default async function HomePage() {
               No required conclusion.
             </p>
 
-            <Link href="/record" className={styles.textLink}>
+            <Link href="/record" className={styles.heroLink}>
               Enter the record <span>→</span>
             </Link>
           </div>
@@ -69,16 +70,38 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <p className={styles.note}>Truth is shared. Judgment is personal.</p>
+        <p className={styles.heroNote}>
+          Truth is shared. Judgment is personal.
+        </p>
       </section>
 
-      <section className={styles.featuredSection}>
+      <section className={styles.intro}>
+        <div className={styles.transitionMark}>
+          <Mark />
+        </div>
+
+        <div className={styles.introInner}>
+          <h2>
+            THE SAME EVIDENCE
+            <br />
+            FOR EVERYONE.
+          </h2>
+
+          <p>
+            All sources are public. Missing information stays visible.
+            <br />
+            Contradictions remain on display.
+            <br />
+            You see the record exactly as it is.
+          </p>
+        </div>
+      </section>
+
+      <section className={styles.cases}>
         <div className={styles.featuredIntro}>
           <p>PUBLIC RECORDS / SEXUAL VIOLENCE</p>
           <h2>Verkrachting zonder rechtvaardigheid</h2>
-          <span>
-            Vijf recente dossiers uit het beschikbare openbare overzicht.
-          </span>
+          <span>Vijf recente dossiers uit het beschikbare openbare overzicht.</span>
         </div>
 
         <div className={styles.tableHead}>
@@ -89,53 +112,113 @@ export default async function HomePage() {
           <span />
         </div>
 
-        <div className={styles.caseList}>
-          {error ? (
-            <div className={styles.emptyState}>
-              De dossiers konden niet uit de database worden geladen.
-            </div>
-          ) : cases.length === 0 ? (
-            <div className={styles.emptyState}>
-              Nog geen dossiers beschikbaar.
-            </div>
-          ) : (
-            cases.map((item, index) => (
-              <article className={styles.caseRow} key={item.id}>
-                <div className={styles.caseName}>
-                  <b>{String(index + 1).padStart(2, "0")}</b>
-                  <div>
-                    <strong>{item.case_label}</strong>
-                    {item.person_label && (
-                      <small>{item.person_label}</small>
-                    )}
-                    {item.incident_date_text && (
-                      <small>Incident: {item.incident_date_text}</small>
-                    )}
-                  </div>
+        {error ? (
+          <div className={styles.emptyState}>
+            De dossiers konden niet uit de database worden geladen.
+          </div>
+        ) : cases.length === 0 ? (
+          <div className={styles.emptyState}>
+            Nog geen dossiers beschikbaar.
+          </div>
+        ) : (
+          cases.map((item, index) => (
+            <article className={styles.caseRow} key={item.id}>
+              <div className={styles.caseName}>
+                <b>{String(index + 1).padStart(2, "0")}</b>
+                <div>
+                  <strong>{item.case_label}</strong>
+                  {item.person_label && <small>{item.person_label}</small>}
+                  {item.incident_date_text && (
+                    <small>Incident: {item.incident_date_text}</small>
+                  )}
                 </div>
+              </div>
 
-                <time>{formatPublicDate(item.public_date)}</time>
+              <time>{formatPublicDate(item.public_date)}</time>
+              <p>{item.victim_status}</p>
+              <p className={styles.suspectStatus}>{item.suspect_status}</p>
 
-                <p>{item.victim_status}</p>
-
-                <p className={styles.suspectStatus}>{item.suspect_status}</p>
-
-                <Link
-                  href={`/cases/${item.slug}`}
-                  aria-label={`Open ${item.case_label}`}
-                >
-                  →
-                </Link>
-              </article>
-            ))
-          )}
-        </div>
+              <Link
+                href={`/cases/${item.slug}`}
+                className={styles.caseLink}
+                aria-label={`Open ${item.case_label}`}
+              >
+                Open record <span>→</span>
+              </Link>
+            </article>
+          ))
+        )}
 
         <div className={styles.featuredFooter}>
           <span>5 meest recente gevallen</span>
           <Link href="/cases">Bekijk alle gevallen →</Link>
         </div>
       </section>
+
+      {preview && (
+        <section className={styles.recordShell}>
+          <div className={styles.recordTop}>
+            <div className={styles.recordBrand}>
+              <Mark small />
+              <span>PHOSPHOROS</span>
+            </div>
+
+            <div className={styles.recordStates}>
+              <span>PUBLIC</span>
+              <span>KNOWN</span>
+              <span>UNKNOWN</span>
+              <span>OPEN</span>
+            </div>
+          </div>
+
+          <div className={styles.recordGrid}>
+            <div className={styles.recordSources}>
+              <h3>THE RECORD</h3>
+
+              <div className={styles.sourceRow}>
+                <div className={styles.sourceIcon} />
+                <div className={styles.sourceCopy}>
+                  <strong>{preview.case_label}</strong>
+                  <span>{preview.person_label ?? "Public case record"}</span>
+                </div>
+                <small>{preview.legal_status ?? "OPEN"}</small>
+              </div>
+
+              <div className={styles.sourceRow}>
+                <div className={styles.sourceIcon} />
+                <div className={styles.sourceCopy}>
+                  <strong>Public date</strong>
+                  <span>{formatPublicDate(preview.public_date)}</span>
+                </div>
+                <small>PUBLIC</small>
+              </div>
+
+              <div className={styles.sourceRow}>
+                <div className={styles.sourceIcon} />
+                <div className={styles.sourceCopy}>
+                  <strong>Consequence</strong>
+                  <span>{preview.consequence ?? "No final consequence publicly recorded"}</span>
+                </div>
+                <small>STATUS</small>
+              </div>
+
+              <Link
+                href={`/cases/${preview.slug}`}
+                className={styles.sourcesLink}
+              >
+                Open full record <span>→</span>
+              </Link>
+            </div>
+
+            <div className={styles.judgment}>
+              <span>PUBLIC RECORD</span>
+              <h3>{preview.case_label}</h3>
+              <p>{preview.legal_status ?? "Legal status not yet publicly recorded."}</p>
+              <Link href={`/cases/${preview.slug}`}>View case →</Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className={styles.statement}>
         <h2>
@@ -144,27 +227,34 @@ export default async function HomePage() {
           IT MAKES YOUR DECISION ACCOUNTABLE.
         </h2>
 
-        <div>
+        <div className={styles.statementSteps}>
           <span>Recognise harm</span>
           <span>Locate responsibility</span>
           <span>Choose a response</span>
         </div>
       </section>
 
+      <section className={styles.bridge}>
+        <p>
+          Meridian opens the question.
+          <br />
+          Phosphoros opens the record.
+        </p>
+
+        <a
+          href="https://perspectief-beta.vercel.app"
+          target="_blank"
+          rel="noreferrer"
+        >
+          View context in Meridian <span>→</span>
+        </a>
+      </section>
+
       <footer className={styles.footer}>
-        <div>
-          <p>Meridian opens the question.</p>
-          <p>Phosphoros opens the record.</p>
-          <a href="https://perspectief-beta.vercel.app">View context in Meridian →</a>
-        </div>
-
-        <div className={styles.footerBrand}>
-          <Mark />
-          <strong>PHOSPHOROS</strong>
-          <span>Nothing hidden. Nothing decided for you.</span>
-        </div>
-
-        <Link href="/cases">Enter Phosphoros →</Link>
+        <Mark />
+        <h2>PHOSPHOROS</h2>
+        <p>Nothing hidden. Nothing decided for you.</p>
+        <Link href="/cases">Enter Phosphoros</Link>
       </footer>
     </main>
   );
