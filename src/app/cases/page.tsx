@@ -25,7 +25,7 @@ export default async function CasesPage() {
       <section className={styles.hero}>
         <p className={styles.eyebrow}>PHOSPHOROS / RECORDS</p>
         <h1>THE RECORD</h1>
-        <p>
+        <p className={styles.intro}>
           Every case available in the public record.
           <br />
           No conclusion is required.
@@ -42,22 +42,19 @@ export default async function CasesPage() {
         </div>
 
         {cases.map((item) => (
-          <Link
-            key={item.id}
-            href={`/cases/${item.slug}`}
-            className={styles.row}
-          >
+          <Link key={item.id} href={`/cases/${item.slug}`} className={styles.row}>
             <div className={styles.title}>
-              <strong>{item.case_label}</strong>
+              <strong>{item.title}</strong>
               {item.location && <span>{item.location}</span>}
             </div>
-
             <span>{formatDate(item.incident_date ?? item.public_date)}</span>
             <span>{item.victim_status ?? "—"}</span>
-            <span>{item.legal_status ?? item.suspect_status ?? "—"}</span>
+            <span>{item.legal_status ?? "—"}</span>
             <span className={styles.arrow}>→</span>
           </Link>
         ))}
+
+        {cases.length === 0 && <p className={styles.empty}>No public records found.</p>}
       </section>
     </main>
   );
