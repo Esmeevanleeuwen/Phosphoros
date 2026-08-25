@@ -1,19 +1,33 @@
 import Link from "next/link";
-import type { CaseItem } from "@/data/cases";
 import styles from "./CaseRow.module.css";
+import type { PhosphorosCase } from "@/lib/phosphoros/cases";
 
-export default function CaseRow({item}:{item:CaseItem}) {
-  const missingCount=item.sources.filter(s=>s.status==="missing").length+item.missing.length;
-  return <article className={styles.row}>
-    <div className={styles.image} style={{backgroundImage:`url(${item.image})`}}/>
-    <div className={styles.main}>
-      <h3>{item.title}</h3>
-      <div className={styles.stats}>
-        <div><span>SOURCES</span><strong>{item.sources.length}</strong></div>
-        <div><span>MISSING</span><strong className={styles.missing}>{missingCount}</strong></div>
-        <div><span>JUDGMENTS</span><strong>0</strong></div>
+export default function CaseRow({ item }: { item: PhosphorosCase }) {
+  return (
+    <article className={styles.row}>
+      <div className={styles.image} aria-hidden="true" />
+
+      <div className={styles.main}>
+        <h3>{item.title}</h3>
+        <div className={styles.stats}>
+          <div>
+            <span>DATE</span>
+            <strong>{item.public_date ?? "—"}</strong>
+          </div>
+          <div>
+            <span>VICTIM</span>
+            <strong>{item.victim_status ?? "—"}</strong>
+          </div>
+          <div>
+            <span>STATUS</span>
+            <strong>{item.legal_status ?? item.perpetrator_status ?? "—"}</strong>
+          </div>
+        </div>
       </div>
-    </div>
-    <Link href={`/cases/${item.slug}`} className={styles.link}>Open record <span>→</span></Link>
-  </article>
+
+      <Link href={`/cases/${item.slug}`} className={styles.link}>
+        Open record <span>→</span>
+      </Link>
+    </article>
+  );
 }
