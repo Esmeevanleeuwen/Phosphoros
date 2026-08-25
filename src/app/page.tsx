@@ -35,8 +35,7 @@ export default async function HomePage() {
     .select(
       "id, slug, case_label, person_label, incident_date_text, public_date, victim_status, suspect_status, legal_status, consequence"
     )
-    .eq("is_featured", true)
-    .order("featured_position", { ascending: true })
+    .order("public_date", { ascending: false, nullsFirst: false })
     .limit(5);
 
   const cases = (data ?? []) as FeaturedCase[];
@@ -78,8 +77,7 @@ export default async function HomePage() {
           <p>PUBLIC RECORDS / SEXUAL VIOLENCE</p>
           <h2>Verkrachting zonder rechtvaardigheid</h2>
           <span>
-            Vijf uitgelichte dossiers. Geen namen ingevuld waar het publieke
-            dossier die niet geeft.
+            Vijf recente dossiers uit het beschikbare openbare overzicht.
           </span>
         </div>
 
@@ -94,7 +92,11 @@ export default async function HomePage() {
         <div className={styles.caseList}>
           {error ? (
             <div className={styles.emptyState}>
-              Database nog niet ingericht. Voer eerst het SQL-bestand uit.
+              De dossiers konden niet uit de database worden geladen.
+            </div>
+          ) : cases.length === 0 ? (
+            <div className={styles.emptyState}>
+              Nog geen dossiers beschikbaar.
             </div>
           ) : (
             cases.map((item, index) => (
@@ -103,6 +105,9 @@ export default async function HomePage() {
                   <b>{String(index + 1).padStart(2, "0")}</b>
                   <div>
                     <strong>{item.case_label}</strong>
+                    {item.person_label && (
+                      <small>{item.person_label}</small>
+                    )}
                     {item.incident_date_text && (
                       <small>Incident: {item.incident_date_text}</small>
                     )}
@@ -115,7 +120,10 @@ export default async function HomePage() {
 
                 <p className={styles.suspectStatus}>{item.suspect_status}</p>
 
-                <Link href={`/cases/${item.slug}`} aria-label={`Open ${item.case_label}`}>
+                <Link
+                  href={`/cases/${item.slug}`}
+                  aria-label={`Open ${item.case_label}`}
+                >
                   →
                 </Link>
               </article>
@@ -124,7 +132,7 @@ export default async function HomePage() {
         </div>
 
         <div className={styles.featuredFooter}>
-          <span>1–5 uitgelichte gevallen</span>
+          <span>5 meest recente gevallen</span>
           <Link href="/cases">Bekijk alle gevallen →</Link>
         </div>
       </section>
