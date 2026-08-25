@@ -1,76 +1,39 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from "@/lib/supabase";
 
 export type PhosphorosCase = {
   id: string;
   slug: string;
   title: string;
   location: string | null;
-
   incident_date: string | null;
   public_date: string | null;
-
-  victim_status: string;
-  perpetrator_status: string;
-
-  legal_status: string;
+  victim_status: string | null;
+  perpetrator_status: string | null;
+  legal_status: string | null;
   consequence: string | null;
-
   known_facts: string | null;
   evidence_summary: string | null;
   unknowns: string | null;
-
   ecli: string | null;
-
-  source_level: string | null;
-
-  is_featured: boolean;
-  featured_position: number | null;
-
-  created_at: string;
 };
 
-export async function getAllCases() {
+export async function getAllCases(): Promise<PhosphorosCase[]> {
   const { data, error } = await supabase
     .from("phosphoros_cases")
     .select("*")
-    .order("public_date", {
-      ascending: false,
-      nullsFirst: false,
-    });
+    .order("public_date", { ascending: false });
 
   if (error) {
     console.error("Error loading cases:", error);
     return [];
   }
 
-  return data as PhosphorosCase[];
+  return data ?? [];
 }
 
-export async function getFeaturedCases(limit = 5) {
-  const { data, error } = await supabase
-    .from("phosphoros_cases")
-    .select("*")
-    .eq("is_featured", true)
-    .order("featured_position", {
-      ascending: true,
-      nullsFirst: false,
-    })
-    .limit(limit);
-
-  if (error) {
-    console.error("Error loading featured cases:", error);
-    return [];
-  }
-
-  return data as PhosphorosCase[];
-}
-
-export async function getCaseBySlug(slug: string) {
+export async function getCaseBySlug(
+  slug: string
+): Promise<PhosphorosCase | null> {
   const { data, error } = await supabase
     .from("phosphoros_cases")
     .select("*")
@@ -82,5 +45,5 @@ export async function getCaseBySlug(slug: string) {
     return null;
   }
 
-  return data as PhosphorosCase;
+  return data;
 }
