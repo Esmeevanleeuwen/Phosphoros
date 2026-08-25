@@ -2,22 +2,50 @@ import Link from "next/link";
 
 import Header from "@/components/Header";
 import Mark from "@/components/Mark";
-import JudgmentPanel from "@/components/JudgmentPanel";
-import { getFeaturedCases } from "@/lib/phosphoros/cases";
+import { supabase } from "@/lib/supabase";
 
 import styles from "./page.module.css";
 
+type FeaturedCase = {
+  id: string;
+  slug: string;
+  case_label: string;
+  person_label: string | null;
+  incident_date_text: string | null;
+  public_date: string | null;
+  victim_status: string;
+  suspect_status: string;
+  legal_status: string | null;
+  consequence: string | null;
+};
+
+function formatPublicDate(value: string | null) {
+  if (!value) return "—";
+
+  return new Intl.DateTimeFormat("nl-NL", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(`${value}T12:00:00`));
+}
+
 export default async function HomePage() {
-  const cases = await getFeaturedCases(5);
-  const preview = cases[0];
+  const { data, error } = await supabase
+    .from("phosphoros_cases")
+    .select(
+      "id, slug, case_label, person_label, incident_date_text, public_date, victim_status, suspect_status, legal_status, consequence"
+    )
+    .order("public_date", { ascending: false, nullsFirst: false })
+    .limit(5);
+
+  const cases = (data ?? []) as FeaturedCase[];
 
   return (
     <main className={styles.page}>
-      {/* HERO */}
       <section className={styles.hero}>
         <Header dark />
 
-        <div className={styles.heroInner}>
+        <div className={styles.heroGrid}>
           <div className={styles.heroCopy}>
             <h1>
               SEE EVERYTHING.
@@ -31,9 +59,8 @@ export default async function HomePage() {
               No required conclusion.
             </p>
 
-            <Link href="/record" className={styles.heroLink}>
-              Enter the record
-              <span>→</span>
+            <Link href="/record" className={styles.textLink}>
+              Enter the record <span>→</span>
             </Link>
           </div>
 
@@ -42,146 +69,74 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <p className={styles.heroNote}>
-          Truth is shared. Judgment is personal.
-        </p>
+        <p className={styles.note}>Truth is shared. Judgment is personal.</p>
       </section>
 
-      {/* INTRO */}
-      <section className={styles.intro}>
-        <div className={styles.transitionMark}>
-          <Mark />
+      <section className={styles.featuredSection}>
+        <div className={styles.featuredIntro}>
+          <p>PUBLIC RECORDS / SEXUAL VIOLENCE</p>
+          <h2>Verkrachting zonder rechtvaardigheid</h2>
+          <span>
+            Vijf recente dossiers uit het beschikbare openbare overzicht.
+          </span>
         </div>
 
-        <div className={styles.introInner}>
-          <h2>
-            THE SAME EVIDENCE
-            <br />
-            FOR EVERYONE.
-          </h2>
-
-          <p>
-            All sources are public. Missing information stays visible.
-            <br />
-            Contradictions remain on display.
-            <br />
-            You see the record exactly as it is.
-          </p>
+        <div className={styles.tableHead}>
+          <span>Zaak</span>
+          <span>Datum publiek</span>
+          <span>Status slachtoffer</span>
+          <span>Status verdachte / dader</span>
+          <span />
         </div>
-      </section>
 
-      {/* CASES */}
-      <section className={styles.cases}>
-        {cases.map((item) => {
-          const missingCount =
-            item.missing.length +
-            item.sources.filter(
-              (source) => source.status === "missing"
-            ).length;
-
-          return (
-            <article
-              className={styles.caseRow}
-              key={item.slug}
-            >
-              <div
-                className={styles.caseImage}
-                style={{
-                  backgroundImage: `url(${item.image})`,
-                }}
-              />
-
-              <div className={styles.caseContent}>
-                <h3>{item.title}</h3>
-
-                <div className={styles.caseStats}>
+        <div className={styles.caseList}>
+          {error ? (
+            <div className={styles.emptyState}>
+              De dossiers konden niet uit de database worden geladen.
+            </div>
+          ) : cases.length === 0 ? (
+            <div className={styles.emptyState}>
+              Nog geen dossiers beschikbaar.
+            </div>
+          ) : (
+            cases.map((item, index) => (
+              <article className={styles.caseRow} key={item.id}>
+                <div className={styles.caseName}>
+                  <b>{String(index + 1).padStart(2, "0")}</b>
                   <div>
-                    <span>SOURCES</span>
-                    <strong>
-                      {item.sources.length}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <span>MISSING</span>
-                    <strong className={styles.missing}>
-                      {missingCount}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <span>JUDGMENTS</span>
-                    <strong>0</strong>
+                    <strong>{item.case_label}</strong>
+                    {item.person_label && (
+                      <small>{item.person_label}</small>
+                    )}
+                    {item.incident_date_text && (
+                      <small>Incident: {item.incident_date_text}</small>
+                    )}
                   </div>
                 </div>
-              </div>
 
-              <Link
-                href={`/cases/${item.slug}`}
-                className={styles.caseLink}
-              >
-                Open record
-                <span>→</span>
-              </Link>
-            </article>
-          );
-        })}
-      </section>
+                <time>{formatPublicDate(item.public_date)}</time>
 
-      {/* RECORD PREVIEW */}
-      <section className={styles.recordShell}>
-        <div className={styles.recordTop}>
-          <div className={styles.recordBrand}>
-            <Mark small />
-            <span>PHOSPHOROS</span>
-          </div>
+                <p>{item.victim_status}</p>
 
-          <div className={styles.recordStates}>
-            <span>ESTABLISHED</span>
-            <span>DISPUTED</span>
-            <span>MISSING</span>
-            <span>CONTRADICTED</span>
-          </div>
+                <p className={styles.suspectStatus}>{item.suspect_status}</p>
+
+                <Link
+                  href={`/cases/${item.slug}`}
+                  aria-label={`Open ${item.case_label}`}
+                >
+                  →
+                </Link>
+              </article>
+            ))
+          )}
         </div>
 
-        <div className={styles.recordGrid}>
-          <div className={styles.recordSources}>
-            <h3>THE RECORD</h3>
-
-            {preview.sources.map((source) => (
-              <div
-                className={styles.sourceRow}
-                key={source.title}
-              >
-                <div className={styles.sourceIcon} />
-
-                <div className={styles.sourceCopy}>
-                  <strong>{source.title}</strong>
-                  <span>{source.meta}</span>
-                </div>
-
-                <small>{source.format}</small>
-              </div>
-            ))}
-
-            <Link
-              href={`/cases/${preview.slug}`}
-              className={styles.sourcesLink}
-            >
-              View all sources
-              <span>→</span>
-            </Link>
-          </div>
-
-          <div className={styles.judgment}>
-            <JudgmentPanel
-              caseSlug={preview.slug}
-            />
-          </div>
+        <div className={styles.featuredFooter}>
+          <span>5 meest recente gevallen</span>
+          <Link href="/cases">Bekijk alle gevallen →</Link>
         </div>
       </section>
 
-      {/* STATEMENT */}
       <section className={styles.statement}>
         <h2>
           TRUTH DOES NOT DECIDE FOR YOU.
@@ -189,44 +144,27 @@ export default async function HomePage() {
           IT MAKES YOUR DECISION ACCOUNTABLE.
         </h2>
 
-        <div className={styles.statementSteps}>
+        <div>
           <span>Recognise harm</span>
           <span>Locate responsibility</span>
           <span>Choose a response</span>
         </div>
       </section>
 
-      {/* MERIDIAN BRIDGE */}
-      <section className={styles.bridge}>
-        <p>
-          Meridian opens the question.
-          <br />
-          Phosphoros opens the record.
-        </p>
-
-        <a
-          href="https://perspectief-beta.vercel.app"
-          target="_blank"
-          rel="noreferrer"
-        >
-          View context in Meridian
-          <span>→</span>
-        </a>
-      </section>
-
-      {/* FOOTER */}
       <footer className={styles.footer}>
-        <Mark />
+        <div>
+          <p>Meridian opens the question.</p>
+          <p>Phosphoros opens the record.</p>
+          <a href="https://perspectief-beta.vercel.app">View context in Meridian →</a>
+        </div>
 
-        <h2>PHOSPHOROS</h2>
+        <div className={styles.footerBrand}>
+          <Mark />
+          <strong>PHOSPHOROS</strong>
+          <span>Nothing hidden. Nothing decided for you.</span>
+        </div>
 
-        <p>
-          Nothing hidden. Nothing decided for you.
-        </p>
-
-        <Link href="/cases">
-          Enter Phosphoros
-        </Link>
+        <Link href="/cases">Enter Phosphoros →</Link>
       </footer>
     </main>
   );
