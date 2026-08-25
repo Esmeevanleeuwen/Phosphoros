@@ -23,14 +23,8 @@ export default async function CasesPage() {
       <Header />
 
       <section className={styles.hero}>
-        <p className={styles.eyebrow}>
-          PHOSPHOROS / RECORDS
-        </p>
-
-        <h1>
-          THE RECORD
-        </h1>
-
+        <p className={styles.eyebrow}>PHOSPHOROS / RECORDS</p>
+        <h1>THE RECORD</h1>
         <p>
           Every case available in the public record.
           <br />
@@ -54,30 +48,14 @@ export default async function CasesPage() {
             className={styles.row}
           >
             <div className={styles.title}>
-              <strong>{item.title}</strong>
-
-              {item.location && (
-                <span>{item.location}</span>
-              )}
+              <strong>{item.case_label}</strong>
+              {item.location && <span>{item.location}</span>}
             </div>
 
-            <span>
-              {formatDate(
-                item.incident_date ?? item.public_date
-              )}
-            </span>
-
-            <span>
-              {item.victim_status}
-            </span>
-
-            <span>
-              {item.legal_status}
-            </span>
-
-            <span className={styles.arrow}>
-              →
-            </span>
+            <span>{formatDate(item.incident_date ?? item.public_date)}</span>
+            <span>{item.victim_status ?? "—"}</span>
+            <span>{item.legal_status ?? item.suspect_status ?? "—"}</span>
+            <span className={styles.arrow}>→</span>
           </Link>
         ))}
       </section>
