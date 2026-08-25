@@ -44,14 +44,29 @@ export default async function HomePage() {
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
-        <Header dark />
+        <div className={styles.heroGlass} aria-hidden="true" />
+        <div className={styles.heroSilhouette} aria-hidden="true">
+          <div className={`${styles.arm} ${styles.armOne}`} />
+          <div className={`${styles.hand} ${styles.handOne}`}>
+            <i /><i /><i /><i /><i />
+          </div>
+          <div className={`${styles.body} ${styles.bodyOne}`} />
+          <div className={`${styles.arm} ${styles.armTwo}`} />
+          <div className={`${styles.hand} ${styles.handTwo}`}>
+            <i /><i /><i /><i /><i />
+          </div>
+        </div>
+
+        <Header />
 
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
             <h1>
               SEE EVERYTHING.
               <br />
-              DECIDE FOR YOURSELF.
+              DECIDE FOR
+              <br />
+              YOURSELF.
             </h1>
 
             <p>
@@ -65,14 +80,21 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className={styles.heroSymbol}>
+          <div className={styles.heroSymbol} aria-hidden="true">
             <Mark />
           </div>
         </div>
 
-        <p className={styles.heroNote}>
-          Truth is shared. Judgment is personal.
-        </p>
+        <div className={styles.heroMeta}>
+          <span className={styles.heroBadge}>N</span>
+          <p>Truth is shared. Judgment is personal.</p>
+        </div>
+
+        <div className={styles.heroRule} aria-hidden="true">
+          <span />
+          <Mark small />
+          <span />
+        </div>
       </section>
 
       <section className={styles.intro}>
