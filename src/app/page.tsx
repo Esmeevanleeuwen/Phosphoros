@@ -9,12 +9,12 @@ import styles from "./page.module.css";
 type FeaturedCase = {
   id: string;
   slug: string;
-  case_label: string;
-  person_label: string | null;
-  incident_date_text: string | null;
+  title: string;
+  location: string | null;
+  incident_date: string | null;
   public_date: string | null;
-  victim_status: string;
-  suspect_status: string;
+  victim_status: string | null;
+  perpetrator_status: string | null;
   legal_status: string | null;
   consequence: string | null;
 };
@@ -33,7 +33,7 @@ export default async function HomePage() {
   const { data, error } = await supabase
     .from("phosphoros_cases")
     .select(
-      "id, slug, case_label, person_label, incident_date_text, public_date, victim_status, suspect_status, legal_status, consequence"
+      "id, slug, title, location, incident_date, public_date, victim_status, perpetrator_status, legal_status, consequence"
     )
     .order("public_date", { ascending: false, nullsFirst: false })
     .limit(5);
@@ -126,22 +126,24 @@ export default async function HomePage() {
               <div className={styles.caseName}>
                 <b>{String(index + 1).padStart(2, "0")}</b>
                 <div>
-                  <strong>{item.case_label}</strong>
-                  {item.person_label && <small>{item.person_label}</small>}
-                  {item.incident_date_text && (
-                    <small>Incident: {item.incident_date_text}</small>
+                  <strong>{item.title}</strong>
+                  {item.location && <small>{item.location}</small>}
+                  {item.incident_date && (
+                    <small>Incident: {formatPublicDate(item.incident_date)}</small>
                   )}
                 </div>
               </div>
 
               <time>{formatPublicDate(item.public_date)}</time>
-              <p>{item.victim_status}</p>
-              <p className={styles.suspectStatus}>{item.suspect_status}</p>
+              <p>{item.victim_status ?? "Unknown"}</p>
+              <p className={styles.suspectStatus}>
+                {item.perpetrator_status ?? "Unknown"}
+              </p>
 
               <Link
                 href={`/cases/${item.slug}`}
                 className={styles.caseLink}
-                aria-label={`Open ${item.case_label}`}
+                aria-label={`Open ${item.title}`}
               >
                 Open record <span>→</span>
               </Link>
@@ -178,8 +180,8 @@ export default async function HomePage() {
               <div className={styles.sourceRow}>
                 <div className={styles.sourceIcon} />
                 <div className={styles.sourceCopy}>
-                  <strong>{preview.case_label}</strong>
-                  <span>{preview.person_label ?? "Public case record"}</span>
+                  <strong>{preview.title}</strong>
+                  <span>{preview.location ?? "Public case record"}</span>
                 </div>
                 <small>{preview.legal_status ?? "OPEN"}</small>
               </div>
@@ -202,17 +204,14 @@ export default async function HomePage() {
                 <small>STATUS</small>
               </div>
 
-              <Link
-                href={`/cases/${preview.slug}`}
-                className={styles.sourcesLink}
-              >
+              <Link href={`/cases/${preview.slug}`} className={styles.sourcesLink}>
                 Open full record <span>→</span>
               </Link>
             </div>
 
             <div className={styles.judgment}>
               <span>PUBLIC RECORD</span>
-              <h3>{preview.case_label}</h3>
+              <h3>{preview.title}</h3>
               <p>{preview.legal_status ?? "Legal status not yet publicly recorded."}</p>
               <Link href={`/cases/${preview.slug}`}>View case →</Link>
             </div>
@@ -241,11 +240,7 @@ export default async function HomePage() {
           Phosphoros opens the record.
         </p>
 
-        <a
-          href="https://perspectief-beta.vercel.app"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="https://perspectief-beta.vercel.app" target="_blank" rel="noreferrer">
           View context in Meridian <span>→</span>
         </a>
       </section>
