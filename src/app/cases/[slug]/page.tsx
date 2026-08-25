@@ -1,51 +1,142 @@
-import {notFound} from "next/navigation";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
 import Header from "@/components/Header";
-import JudgmentPanel from "@/components/JudgmentPanel";
-import {cases,getCaseBySlug} from "@/data/cases";
+import { getCaseBySlug } from "@/lib/phosphoros/cases";
+
 import styles from "./page.module.css";
 
-type Props={params:Promise<{slug:string}>};
-export function generateStaticParams(){return cases.map(item=>({slug:item.slug}))}
+function formatDate(date: string | null) {
+  if (!date) return "Unknown";
 
-export default async function CasePage({params}:Props){
-  const {slug}=await params;
-  const item=getCaseBySlug(slug);
-  if(!item) notFound();
+  return new Intl.DateTimeFormat("nl-NL", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(date));
+}
 
-  return <main className={styles.page}>
-    <Header dark/>
-    <section className={styles.hero}>
-      <p>PUBLIC RECORD</p>
-      <h1>{item.title}</h1>
-      <span>{item.subtitle}</span>
-    </section>
+export default async function CasePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
-    <section className={styles.statusBar}>
-      {["established","disputed","missing","contradicted"].map(status=><span key={status}>{status.toUpperCase()}</span>)}
-    </section>
+  const item = await getCaseBySlug(slug);
 
-    <section className={styles.grid}>
-      <div className={styles.record}>
-        <h2>THE RECORD</h2>
-        {item.sources.map(source=><div className={styles.source} key={source.title}>
-          <div><strong>{source.title}</strong><span>{source.meta}</span></div>
-          <div className={styles.sourceRight}><small>{source.status.toUpperCase()}</small><b>{source.format}</b></div>
-        </div>)}
+  if (!item) {
+    notFound();
+  }
 
-        <h2 className={styles.sectionTitle}>CLAIMS</h2>
-        {item.claims.map(claim=><article className={styles.claim} key={claim.title}>
-          <span>{claim.status.toUpperCase()}</span>
-          <h3>{claim.title}</h3>
-          <p>{claim.body}</p>
-        </article>)}
+  return (
+    <main className={styles.page}>
+      <Header />
 
-        <div className={styles.twoCol}>
-          <div><h2>MISSING</h2>{item.missing.map(entry=><p key={entry}>{entry}</p>)}</div>
-          <div><h2>CONTRADICTIONS</h2>{item.contradictions.map(entry=><p key={entry}>{entry}</p>)}</div>
+      <section className={styles.hero}>
+        <Link
+          href="/cases"
+          className={styles.back}
+        >
+          ← All records
+        </Link>
+
+        <p className={styles.eyebrow}>
+          PHOSPHOROS / CASE RECORD
+        </p>
+
+        <h1>{item.title}</h1>
+
+        {item.location && (
+          <p className={styles.location}>
+            {item.location}
+          </p>
+        )}
+      </section>
+
+      <section className={styles.statusGrid}>
+        <div>
+          <span>INCIDENT</span>
+          <strong>
+            {formatDate(item.incident_date)}
+          </strong>
         </div>
-      </div>
 
-      <aside className={styles.judgment}><JudgmentPanel caseSlug={item.slug}/></aside>
-    </section>
-  </main>
+        <div>
+          <span>PUBLIC RECORD</span>
+          <strong>
+            {formatDate(item.public_date)}
+          </strong>
+        </div>
+
+        <div>
+          <span>VICTIM STATUS</span>
+          <strong>
+            {item.victim_status}
+          </strong>
+        </div>
+
+        <div>
+          <span>PERPETRATOR STATUS</span>
+          <strong>
+            {item.perpetrator_status}
+          </strong>
+        </div>
+
+        <div>
+          <span>LEGAL STATUS</span>
+          <strong>
+            {item.legal_status}
+          </strong>
+        </div>
+
+        <div>
+          <span>CONSEQUENCE</span>
+          <strong>
+            {item.consequence ?? "Unknown"}
+          </strong>
+        </div>
+      </section>
+
+      <section className={styles.content}>
+        {item.known_facts && (
+          <article>
+            <span>KNOWN FACTS</span>
+
+            <p>
+              {item.known_facts}
+            </p>
+          </article>
+        )}
+
+        {item.evidence_summary && (
+          <article>
+            <span>EVIDENCE</span>
+
+            <p>
+              {item.evidence_summary}
+            </p>
+          </article>
+        )}
+
+        {item.unknowns && (
+          <article className={styles.unknown}>
+            <span>WHAT REMAINS UNKNOWN</span>
+
+            <p>
+              {item.unknowns}
+            </p>
+          </article>
+        )}
+
+        {item.ecli && (
+          <article>
+            <span>COURT RECORD</span>
+
+            <p>{item.ecli}</p>
+          </article>
+        )}
+      </section>
+    </main>
+  );
 }
