@@ -110,7 +110,6 @@
 }
 
 /* IMAGE — NO BORDER, NO GAP */
-
 .heroImage {
   position: absolute;
 
@@ -152,6 +151,31 @@
 
   object-fit: cover;
   object-position: center bottom;
+}
+
+/* alleen de overgang links */
+.heroImage::after {
+  content: "";
+
+  position: absolute;
+  z-index: 2;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 22%;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    to right,
+    var(--white) 0%,
+    rgba(255, 255, 255, 0.92) 18%,
+    rgba(255, 255, 255, 0.62) 42%,
+    rgba(255, 255, 255, 0.28) 68%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
 /* RED SECTION */
