@@ -34,7 +34,7 @@
   max-width: 980px;
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(54px, 7.5vw, 108px);
+  font-size: var(--display-page);
   font-weight: var(--font-display-weight);
   line-height: 0.9;
   letter-spacing: -0.055em;
@@ -184,7 +184,7 @@
   }
 
   .copy h1 {
-    font-size: clamp(48px, 15vw, 68px);
+    font-size: var(--display-page);
   }
 
   .form label {
