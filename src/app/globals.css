@@ -1,1 +1,102 @@
-*{box-sizing:border-box}html{width:100%;overflow-x:clip;scroll-behavior:smooth;scroll-padding-top:72px}html,body{margin:0;padding:0}body{min-width:0;background:#f2efe8;color:#111212;font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}img,svg{max-width:100%}a{color:inherit}button,input,textarea{font:inherit}button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}::selection{background:#bd9135;color:#090a0a}@media(max-width:720px){html{scroll-padding-top:calc(64px + env(safe-area-inset-top))}input,textarea{font-size:16px}}
+:root {
+  --paper: #f3f0e9;
+  --surface: #faf8f3;
+  --ink: #121313;
+  --muted: #686963;
+  --faint: #9b9b93;
+  --line: rgba(18, 19, 19, 0.16);
+  --line-strong: rgba(18, 19, 19, 0.42);
+  --red: #8f241d;
+  --gold: #aa8743;
+  --dark: #101111;
+  --dark-muted: rgba(255, 255, 255, 0.62);
+  --container: 1320px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --header-height: 76px;
+  --section-space: clamp(80px, 10vw, 144px);
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: Georgia, "Times New Roman", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-width: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--red);
+  color: white;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --gutter: 20px;
+    --header-height: 64px;
+    --section-space: 72px;
+  }
+
+  html {
+    scroll-padding-top: calc(var(--header-height) + env(safe-area-inset-top));
+  }
+
+  input,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

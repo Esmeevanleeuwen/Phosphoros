@@ -6,53 +6,64 @@ import { useState } from "react";
 import Mark from "./Mark";
 import styles from "./Header.module.css";
 
-export default function Header({ dark = false }: { dark?: boolean }) {
+const navigation = [
+  { href: "/cases", label: "Cases" },
+  { href: "/record", label: "Record" },
+  { href: "/method", label: "Method" },
+];
+
+export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  function closeMenu() {
+    setMenuOpen(false);
+  }
+
   return (
-    <header className={`${styles.header} ${dark ? styles.dark : ""}`}>
-      <Link href="/" className={styles.brand} onClick={() => setMenuOpen(false)}>
-        <Mark small />
-        <span>PHOSPHOROS</span>
-      </Link>
-
-      <nav className={styles.nav} aria-label="Primary navigation">
-        <Link href="/cases">Cases</Link>
-        <Link href="/record">Record</Link>
-        <Link href="/method">Method</Link>
-        <Link href="/open-a-case" className={styles.cta}>
-          Open a case
+    <header className={styles.header}>
+      <div className={styles.inner}>
+        <Link href="/" className={styles.brand} onClick={closeMenu}>
+          <Mark small />
+          <span>Phosphoros</span>
         </Link>
-      </nav>
 
-      <button
-        type="button"
-        className={styles.menuButton}
-        aria-expanded={menuOpen}
-        aria-controls="mobile-navigation"
-        aria-label={menuOpen ? "Close navigation" : "Open navigation"}
-        onClick={() => setMenuOpen((current) => !current)}
-      >
-        <span />
-        <span />
-      </button>
+        <nav className={styles.navigation} aria-label="Primary navigation">
+          {navigation.map((item) => (
+            <Link key={item.href} href={item.href}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <Link href="/open-a-case" className={styles.action}>
+          Open a case <span aria-hidden="true">↗</span>
+        </Link>
+
+        <button
+          type="button"
+          className={styles.menuButton}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
+          onClick={() => setMenuOpen((current) => !current)}
+        >
+          {menuOpen ? "Close" : "Menu"}
+        </button>
+      </div>
 
       <nav
         id="mobile-navigation"
-        className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
+        className={`${styles.mobileNavigation} ${menuOpen ? styles.open : ""}`}
         aria-label="Mobile navigation"
       >
-        <Link href="/cases" onClick={() => setMenuOpen(false)}>
-          <span>01</span> Cases
-        </Link>
-        <Link href="/record" onClick={() => setMenuOpen(false)}>
-          <span>02</span> Record
-        </Link>
-        <Link href="/method" onClick={() => setMenuOpen(false)}>
-          <span>03</span> Method
-        </Link>
-        <Link href="/open-a-case" onClick={() => setMenuOpen(false)}>
-          <span>04</span> Open a case
+        {navigation.map((item, index) => (
+          <Link key={item.href} href={item.href} onClick={closeMenu}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            {item.label}
+          </Link>
+        ))}
+        <Link href="/open-a-case" onClick={closeMenu}>
+          <span>04</span>
+          Open a case
         </Link>
       </nav>
     </header>

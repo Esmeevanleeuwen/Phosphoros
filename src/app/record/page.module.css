@@ -1,1 +1,152 @@
-.page{min-height:100vh;background:#f2efe8}.hero{width:min(calc(100% - 56px),1500px);margin:0 auto;padding:110px 0 60px}.hero p{font-size:9px;letter-spacing:.16em}.hero h1{max-width:860px;margin:18px 0 0;font-size:clamp(48px,6vw,88px);font-weight:400;line-height:1}.hero span{display:block;max-width:650px;margin-top:24px;color:rgba(17,18,18,.56);font-size:13px;line-height:1.7}.table{width:min(calc(100% - 56px),1500px);margin:0 auto 80px;border-top:1px solid rgba(17,18,18,.15)}.head,.row{display:grid;grid-template-columns:minmax(260px,2fr) 120px 150px minmax(150px,1fr) 70px;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid rgba(17,18,18,.14)}.head{font-size:8px;letter-spacing:.12em}.case{min-width:0;display:flex;flex-direction:column;gap:6px}.case strong{font-size:14px;font-weight:500;overflow-wrap:anywhere}.case small{color:rgba(17,18,18,.52);font-size:9px}.row span,.row a{font-size:11px}.row a{justify-self:end;text-decoration:none}@media(max-width:720px){.hero,.table{width:calc(100% - 32px)}.hero{padding:calc(104px + env(safe-area-inset-top)) 0 48px}.hero h1{font-size:clamp(42px,13vw,58px);overflow-wrap:anywhere}.head{display:none}.row{grid-template-columns:minmax(0,1fr) 64px;gap:0 12px;padding:24px 0}.case{grid-column:1}.case strong{font-size:20px;line-height:1.1}.row span{grid-column:1/-1;padding-top:12px;display:grid;grid-template-columns:78px minmax(0,1fr);gap:12px;line-height:1.45}.row span::before{color:rgba(17,18,18,.46);font-size:8px;letter-spacing:.12em;text-transform:uppercase}.row span:nth-of-type(1)::before{content:"Date"}.row span:nth-of-type(2)::before{content:"Victim"}.row span:nth-of-type(3)::before{content:"Status"}.row a{grid-column:2;grid-row:1;min-height:44px;display:flex;align-items:center;justify-content:flex-end}.empty{padding:44px 0}}
+.page {
+  min-height: 100vh;
+  background: var(--paper);
+}
+
+.standard,
+.index {
+  padding: var(--section-space) var(--gutter);
+}
+
+.standard {
+  background: var(--dark);
+  color: white;
+}
+
+.standardInner,
+.indexInner {
+  width: min(100%, var(--container));
+  margin: 0 auto;
+}
+
+.standard header {
+  display: grid;
+  grid-template-columns: minmax(180px, 2fr) minmax(0, 8fr);
+  gap: clamp(44px, 8vw, 120px);
+  align-items: start;
+}
+
+.standard header p,
+.index header p {
+  margin: 0;
+  color: var(--gold);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.standard h2 {
+  max-width: 960px;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 84px);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+}
+
+.standards {
+  margin-top: clamp(64px, 9vw, 112px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.standards article {
+  min-height: 208px;
+  padding: 24px 28px 24px 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.standards article + article {
+  padding-left: 28px;
+}
+
+.standards article:last-child {
+  border-right: 0;
+}
+
+.standards span {
+  color: var(--gold);
+  font-size: 9px;
+}
+
+.standards h3 {
+  margin: 44px 0 0;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.standards p {
+  max-width: 290px;
+  margin: 12px 0 0;
+  color: var(--dark-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.standardInner > a {
+  width: 170px;
+  min-height: 44px;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid currentColor;
+  color: white;
+  font-size: 10px;
+  text-decoration: none;
+}
+
+.index {
+  background: var(--surface);
+}
+
+.index header {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.index header p {
+  color: var(--red);
+}
+
+.index header span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+@media (max-width: 760px) {
+  .standard header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .standard h2 {
+    font-size: 46px;
+  }
+
+  .standards {
+    grid-template-columns: 1fr;
+    margin-top: 52px;
+  }
+
+  .standards article,
+  .standards article + article {
+    min-height: 0;
+    padding: 24px 0 28px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .standards h3 {
+    margin-top: 28px;
+  }
+
+  .standardInner > a {
+    width: 100%;
+  }
+}
