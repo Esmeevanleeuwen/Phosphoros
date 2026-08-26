@@ -1,6 +1,6 @@
 :root {
   --paper: #f3f0e9;
-  --surface: #faf8f3;
+  --surface: #ffffff;
   --ink: #121313;
   --muted: #686963;
   --faint: #9b9b93;
@@ -15,7 +15,8 @@
   --header-height: 76px;
   --section-space: clamp(80px, 10vw, 144px);
   --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-display: Georgia, "Times New Roman", serif;
+  --font-display: "Arial Narrow", "Nimbus Sans Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-display-weight: 700;
 }
 
 * {
