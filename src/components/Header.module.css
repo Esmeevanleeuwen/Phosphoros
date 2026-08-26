@@ -3,7 +3,7 @@
   z-index: 100;
   top: 0;
   height: var(--header-height);
-  background: rgba(250, 248, 243, 0.96);
+  background: #fff;
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(16px);
 }
