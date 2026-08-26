@@ -15,19 +15,18 @@
   min-height: clamp(600px, calc(100svh - var(--header-height)), 760px);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(360px, 5fr) minmax(0, 7fr);
+  grid-template-columns: minmax(0, 7fr) minmax(360px, 5fr);
   background: #fff;
 }
 
 .heroCopy {
   position: relative;
   z-index: 2;
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 1;
   min-width: 0;
-  padding: clamp(64px, 7vw, 96px)
-    max(var(--gutter), calc((100vw - var(--container)) / 2)) 44px
-    clamp(44px, 6vw, 88px);
+  padding: clamp(64px, 7vw, 96px) clamp(44px, 6vw, 88px) 44px
+    max(var(--gutter), calc((100vw - var(--container)) / 2));
   display: flex;
   flex-direction: column;
 }
@@ -94,7 +93,7 @@
 
 .heroMedia {
   position: relative;
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
   min-width: 0;
   overflow: hidden;
@@ -111,11 +110,11 @@
   background:
     linear-gradient(
       90deg,
-      transparent 32%,
-      rgba(255, 255, 255, 0.18) 52%,
-      rgba(255, 255, 255, 0.68) 72%,
-      rgba(255, 255, 255, 0.96) 90%,
-      #fff 100%
+      #fff 0%,
+      rgba(255, 255, 255, 0.96) 10%,
+      rgba(255, 255, 255, 0.68) 28%,
+      rgba(255, 255, 255, 0.18) 48%,
+      transparent 68%
     ),
     linear-gradient(to top, rgba(18, 19, 19, 0.28), transparent 32%);
   content: "";
