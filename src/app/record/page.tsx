@@ -1,19 +1,18 @@
 import Link from "next/link";
 
 import Header from "@/components/Header";
+import PageIntro from "@/components/PageIntro";
+import RecordList from "@/components/RecordList";
+import SiteFooter from "@/components/SiteFooter";
 import { getAllCases } from "@/lib/phosphoros/cases";
 
 import styles from "./page.module.css";
 
-function formatDate(date: string | null) {
-  if (!date) return "—";
-
-  return new Intl.DateTimeFormat("nl-NL", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(date));
-}
+const standards = [
+  ["01", "Source", "The origin of every public claim remains visible."],
+  ["02", "Status", "Known, disputed and missing information stay separate."],
+  ["03", "Revision", "A record changes when the available evidence changes."],
+];
 
 export default async function RecordPage() {
   const cases = await getAllCases();
@@ -22,43 +21,45 @@ export default async function RecordPage() {
     <main className={styles.page}>
       <Header />
 
-      <section className={styles.hero}>
-        <p>THE RECORD</p>
-        <h1>ONE STANDARD FOR EVERY CASE.</h1>
-        <span>
-          Sources remain separate from claims. Missing information stays visible.
-          Contradictions are not resolved by hiding one side.
-        </span>
-      </section>
+      <PageIntro eyebrow="Phosphoros / The record" title="One standard.">
+        <p>
+          Sources remain separate from claims. Contradictions are not resolved by hiding one
+          side, and missing information is shown as part of the record itself.
+        </p>
+      </PageIntro>
 
-      <section className={styles.table}>
-        <div className={styles.head}>
-          <span>CASE</span>
-          <span>DATE</span>
-          <span>VICTIM</span>
-          <span>STATUS</span>
-          <span>OPEN</span>
-        </div>
+      <section className={styles.standard}>
+        <div className={styles.standardInner}>
+          <header>
+            <p>How the record is organised</p>
+            <h2>A structure that stays the same when the subject changes.</h2>
+          </header>
 
-        {cases.map((item) => (
-          <div className={styles.row} key={item.id}>
-            <div className={styles.case}>
-              <strong>{item.title}</strong>
-              {item.location && <small>{item.location}</small>}
-            </div>
-
-            <span>{formatDate(item.incident_date ?? item.public_date)}</span>
-            <span>{item.victim_status ?? "—"}</span>
-            <span>{item.legal_status ?? item.perpetrator_status ?? "—"}</span>
-
-            <Link href={`/cases/${item.slug}`}>Open →</Link>
+          <div className={styles.standards}>
+            {standards.map(([number, title, body]) => (
+              <article key={number}>
+                <span>{number}</span>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </article>
+            ))}
           </div>
-        ))}
 
-        {cases.length === 0 && (
-          <div className={styles.empty}>No public records available.</div>
-        )}
+          <Link href="/method">Read the full method →</Link>
+        </div>
       </section>
+
+      <section className={styles.index}>
+        <div className={styles.indexInner}>
+          <header>
+            <p>Record index</p>
+            <span>{cases.length} available cases</span>
+          </header>
+          <RecordList items={cases} />
+        </div>
+      </section>
+
+      <SiteFooter />
     </main>
   );
 }

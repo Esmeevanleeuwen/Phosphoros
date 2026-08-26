@@ -1,19 +1,10 @@
-import Link from "next/link";
-
 import Header from "@/components/Header";
+import PageIntro from "@/components/PageIntro";
+import RecordList from "@/components/RecordList";
+import SiteFooter from "@/components/SiteFooter";
 import { getAllCases } from "@/lib/phosphoros/cases";
 
 import styles from "./page.module.css";
-
-function formatDate(date: string | null) {
-  if (!date) return "—";
-
-  return new Intl.DateTimeFormat("nl-NL", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(date));
-}
 
 export default async function CasesPage() {
   const cases = await getAllCases();
@@ -22,40 +13,24 @@ export default async function CasesPage() {
     <main className={styles.page}>
       <Header />
 
-      <section className={styles.hero}>
-        <p className={styles.eyebrow}>PHOSPHOROS / RECORDS</p>
-        <h1>THE RECORD</h1>
-        <p className={styles.intro}>
-          Every case available in the public record.
-          <br />
-          No conclusion is required.
+      <PageIntro eyebrow="Phosphoros / Cases" title="Public cases.">
+        <p>
+          Every available case in one consistent structure. The record shows what is public,
+          what remains unresolved and where information is still missing.
         </p>
-      </section>
+      </PageIntro>
 
       <section className={styles.records}>
-        <div className={styles.header}>
-          <span>CASE</span>
-          <span>DATE</span>
-          <span>VICTIM</span>
-          <span>STATUS</span>
-          <span />
+        <div className={styles.inner}>
+          <div className={styles.summary}>
+            <span>{String(cases.length).padStart(2, "0")}</span>
+            <p>Cases currently available in the public record.</p>
+          </div>
+          <RecordList items={cases} emptyMessage="No public records found." />
         </div>
-
-        {cases.map((item) => (
-          <Link key={item.id} href={`/cases/${item.slug}`} className={styles.row}>
-            <div className={styles.title}>
-              <strong>{item.title}</strong>
-              {item.location && <span>{item.location}</span>}
-            </div>
-            <span>{formatDate(item.incident_date ?? item.public_date)}</span>
-            <span>{item.victim_status ?? "—"}</span>
-            <span>{item.legal_status ?? "—"}</span>
-            <span className={styles.arrow}>→</span>
-          </Link>
-        ))}
-
-        {cases.length === 0 && <p className={styles.empty}>No public records found.</p>}
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

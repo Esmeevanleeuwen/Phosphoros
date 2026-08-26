@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+
 import Header from "@/components/Header";
+import SiteFooter from "@/components/SiteFooter";
+
 import styles from "./page.module.css";
 
 export default function OpenCasePage() {
@@ -11,74 +14,82 @@ export default function OpenCasePage() {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-    const draft = Object.fromEntries(data.entries());
-
-    localStorage.setItem(
-      "phosphoros:case-draft",
-      JSON.stringify(draft)
-    );
-
+    localStorage.setItem("phosphoros:case-draft", JSON.stringify(Object.fromEntries(data.entries())));
     setSaved(true);
   }
 
   return (
     <main className={styles.page}>
-      <Header dark />
+      <Header />
 
-      <section className={styles.grid}>
-        <div className={styles.copy}>
-          <p>OPEN A CASE</p>
+      <section className={styles.intro}>
+        <div className={styles.introInner}>
+          <div className={styles.copy}>
+            <p>Phosphoros / Open a case</p>
+            <h1>Begin with a question, not a verdict.</h1>
+            <span>
+              A case begins with a clear question and at least one public source. This version
+              stores the draft only on this device; nothing is submitted yet.
+            </span>
+          </div>
 
-          <h1>
-            BEGIN WITH A QUESTION, NOT A VERDICT.
-          </h1>
-
-          <span>
-            This first version saves the draft only on your device.
-            No submission is sent anywhere yet.
-          </span>
+          <aside>
+            <span>Before you begin</span>
+            <ol>
+              <li>Describe the central question.</li>
+              <li>Separate public material from assumptions.</li>
+              <li>Leave room for information that is still missing.</li>
+            </ol>
+          </aside>
         </div>
+      </section>
 
-        <form onSubmit={submit} className={styles.form}>
+      <section className={styles.formSection}>
+        <form onSubmit={submit} className={styles.form} onChange={() => setSaved(false)}>
+          <header>
+            <span>New case draft</span>
+            <span>Saved locally</span>
+          </header>
+
           <label>
-            Case title
-            <input name="title" required />
+            <span>01 / Case title</span>
+            <input name="title" placeholder="Give the record a clear name" required />
           </label>
 
           <label>
-            Central question
+            <span>02 / Central question</span>
             <textarea
               name="question"
-              rows={5}
+              rows={4}
+              placeholder="What needs to be established?"
               required
             />
           </label>
 
           <label>
-            Why should this record be opened?
+            <span>03 / Reason for opening</span>
             <textarea
               name="reason"
-              rows={6}
+              rows={5}
+              placeholder="Why should this become a public record?"
             />
           </label>
 
           <label>
-            First public source
-            <input
-              name="source"
-              placeholder="URL or document title"
-            />
+            <span>04 / First public source</span>
+            <input name="source" placeholder="URL or document title" inputMode="url" />
           </label>
 
-          <button type="submit">
-            Save case draft
-          </button>
+          <div className={styles.formFooter}>
+            <p>Your draft remains in this browser until submission becomes available.</p>
+            <button type="submit">Save case draft <span aria-hidden="true">→</span></button>
+          </div>
 
-          {saved && (
-            <p>Draft saved on this device.</p>
-          )}
+          {saved && <p className={styles.saved} role="status">Draft saved on this device.</p>}
         </form>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

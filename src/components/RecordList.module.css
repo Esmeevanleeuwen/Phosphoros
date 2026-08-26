@@ -1,0 +1,40 @@
+.list {
+  border-top: 1px solid var(--line-strong);
+}
+
+.labels {
+  min-height: 42px;
+  display: grid;
+  grid-template-columns: minmax(300px, 1.6fr) minmax(420px, 1.4fr) 120px;
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.labels div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.labels > span:last-child {
+  text-align: right;
+}
+
+.empty {
+  margin: 0;
+  padding: 56px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 1020px) {
+  .labels {
+    display: none;
+  }
+}

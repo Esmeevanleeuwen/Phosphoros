@@ -1,32 +1,44 @@
 import Link from "next/link";
-import styles from "./CaseRow.module.css";
-import type { PhosphorosCase } from "@/lib/phosphoros/cases";
 
-export default function CaseRow({ item }: { item: PhosphorosCase }) {
+import type { PhosphorosCase } from "@/lib/phosphoros/cases";
+import { formatCaseDate } from "@/lib/phosphoros/format";
+
+import styles from "./CaseRow.module.css";
+
+type CaseRowProps = {
+  item: PhosphorosCase;
+  index: number;
+};
+
+export default function CaseRow({ item, index }: CaseRowProps) {
   return (
     <article className={styles.row}>
-      <div className={styles.image} aria-hidden="true" />
-
-      <div className={styles.main}>
-        <h3>{item.title}</h3>
-        <div className={styles.stats}>
-          <div>
-            <span>DATE</span>
-            <strong>{item.public_date ?? "—"}</strong>
-          </div>
-          <div>
-            <span>VICTIM</span>
-            <strong>{item.victim_status ?? "—"}</strong>
-          </div>
-          <div>
-            <span>STATUS</span>
-            <strong>{item.legal_status ?? item.perpetrator_status ?? "—"}</strong>
-          </div>
+      <div className={styles.identity}>
+        <span className={styles.index}>{String(index + 1).padStart(2, "0")}</span>
+        <div>
+          <h3>{item.title}</h3>
+          <p>{item.location ?? "Location not recorded"}</p>
         </div>
       </div>
 
-      <Link href={`/cases/${item.slug}`} className={styles.link}>
-        Open record <span>→</span>
+      <dl className={styles.metadata}>
+        <div>
+          <dt>Date</dt>
+          <dd>{formatCaseDate(item.incident_date ?? item.public_date)}</dd>
+        </div>
+        <div>
+          <dt>Victim</dt>
+          <dd>{item.victim_status ?? "Unknown"}</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{item.legal_status ?? item.perpetrator_status ?? "Unknown"}</dd>
+        </div>
+      </dl>
+
+      <Link href={`/cases/${item.slug}`} className={styles.link} aria-label={`Open ${item.title}`}>
+        <span>Open record</span>
+        <b aria-hidden="true">→</b>
       </Link>
     </article>
   );
