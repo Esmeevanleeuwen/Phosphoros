@@ -10,3 +10,51 @@
 @media(min-width:1600px){.hero{height:900px;min-height:900px}}
 @media(max-width:900px){.hero{height:auto;min-height:760px}.heroInner{width:calc(100% - 32px);height:auto;min-height:760px;grid-template-columns:1fr;gap:34px;padding:120px 0 36px}.heroCopy{max-width:540px}.heroCopy h1{font-size:clamp(48px,12vw,76px)}.signalDot{margin-left:120px}.heroImage{height:420px;align-self:auto}.intro{min-height:100svh;padding:70px 20px}.introInner{grid-template-columns:1fr;gap:42px}.cases,.recordShell{width:calc(100% - 32px)}.featuredIntro{grid-template-columns:1fr}.tableHead{display:none}.caseRow{grid-template-columns:1fr 96px;gap:12px;padding:22px 0}.caseRow:hover{padding-left:0;padding-right:0}.caseRow time,.caseRow p{grid-column:1}.caseLink{grid-column:2;grid-row:1/5}.recordTop{align-items:flex-start;flex-direction:column;gap:14px}.recordStates{flex-wrap:wrap;gap:14px}.recordGrid{grid-template-columns:1fr}.recordSources{border-right:0;border-bottom:1px solid rgba(255,255,255,.2)}.statementSteps{flex-direction:column;gap:20px;align-items:center}}
 @media(max-width:620px){.heroInner{padding-top:105px}.heroCopy h1{font-size:clamp(44px,14vw,64px)}.eyebrow{margin-bottom:20px;font-size:8px}.heroDescription{font-size:12px}.heroImage{height:360px}.intro h2{font-size:clamp(38px,11vw,56px)}}
+@media(max-width:430px){
+  .hero{min-height:0}
+  .heroInner{width:auto;min-height:0;margin:0 max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));gap:30px;padding:calc(102px + env(safe-area-inset-top)) 0 24px}
+  .heroCopy h1{font-size:clamp(42px,13.8vw,54px);overflow-wrap:anywhere}
+  .eyebrow{max-width:250px;line-height:1.5}
+  .signalDot{margin:16px 0 20px 28%}
+  .heroDescription br{display:none}
+  .heroLink{width:100%;min-height:44px;margin-top:26px}
+  .heroImage{height:auto;aspect-ratio:1/1.02}
+  .heroImage img{object-position:center bottom}
+  .intro{min-height:auto;padding:64px max(16px,env(safe-area-inset-right)) 72px max(16px,env(safe-area-inset-left))}
+  .introInner{gap:28px}
+  .intro h2{font-size:clamp(36px,10.8vw,46px);overflow-wrap:anywhere}
+  .introInner p{margin-top:0}
+  .introInner p br{display:none}
+  .cases{width:auto;margin:0 max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));padding:56px 0 64px}
+  .featuredIntro{gap:16px;padding-bottom:24px}
+  .featuredIntro h2{font-size:34px;line-height:1.04;overflow-wrap:anywhere}
+  .caseRow{grid-template-columns:1fr;gap:0;padding:24px 0}
+  .caseName{align-items:flex-start;gap:14px}
+  .caseName strong{display:block;overflow-wrap:anywhere}
+  .caseRow time,.caseRow p{grid-column:1;display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;padding-top:12px}
+  .caseRow time::before{content:"Public";color:rgba(16,17,17,.48);font-size:8px;letter-spacing:.12em;text-transform:uppercase}
+  .caseRow p::before{content:"Victim";color:rgba(16,17,17,.48);font-size:8px;letter-spacing:.12em;text-transform:uppercase}
+  .caseRow .suspectStatus::before{content:"Suspect"}
+  .caseLink{grid-column:1;grid-row:auto;justify-self:stretch;min-height:44px;margin-top:12px;display:flex;align-items:center;justify-content:space-between}
+  .featuredFooter{align-items:flex-start;flex-direction:column;gap:20px}
+  .featuredFooter a{min-height:44px;display:flex;align-items:center}
+  .recordShell{width:auto;margin:0 max(16px,env(safe-area-inset-right)) 56px max(16px,env(safe-area-inset-left))}
+  .recordTop{padding:16px}
+  .recordStates{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .recordSources,.judgment{padding:20px}
+  .sourceRow{display:grid;grid-template-columns:12px minmax(0,1fr);gap:12px}
+  .sourceIcon{grid-row:1/3}
+  .sourceRow small{grid-column:2;justify-self:start}
+  .sourceCopy strong,.sourceCopy span,.judgment h3{overflow-wrap:anywhere}
+  .sourcesLink,.judgment a{min-height:44px;display:inline-flex;align-items:center}
+  .judgment h3{font-size:24px}
+  .statement{padding:64px max(16px,env(safe-area-inset-right))}
+  .statement h2{font-size:clamp(30px,9vw,38px);overflow-wrap:anywhere}
+  .statementSteps{width:100%;margin-top:34px;gap:12px}
+  .statementSteps span{width:100%;min-height:44px;display:flex;align-items:center;justify-content:center}
+  .bridge{padding:40px max(16px,env(safe-area-inset-right))}
+  .bridge a{min-height:44px;display:inline-flex;align-items:center}
+  .footer{padding:48px max(16px,env(safe-area-inset-right)) calc(56px + env(safe-area-inset-bottom))}
+  .footer h2{font-size:22px;letter-spacing:.24em}
+  .footer a{min-height:44px;display:flex;align-items:center}
+}

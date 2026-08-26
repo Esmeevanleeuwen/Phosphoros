@@ -14,4 +14,20 @@
 .title span, .row > span { color: rgba(17,18,18,.55); }
 .arrow { text-align: right; font-size: 18px; color: #111 !important; }
 .empty { padding: 60px 0; color: rgba(17,18,18,.5); font-size: 12px; }
-@media (max-width: 760px) { .hero, .records { width: calc(100% - 32px); } .hero { padding: 70px 0 50px; } .header { display:none; } .row { grid-template-columns: 1fr 24px; gap: 12px; } .row > span:not(.arrow) { display:none; } }
+@media (max-width: 760px) {
+  .hero, .records { width: calc(100% - 32px); }
+  .hero { padding: calc(104px + env(safe-area-inset-top)) 0 48px; }
+  .hero h1 { font-size: clamp(46px, 15vw, 64px); overflow-wrap: anywhere; }
+  .intro br { display: none; }
+  .header { display:none; }
+  .row { min-height: 0; grid-template-columns: minmax(0, 1fr) 44px; gap: 0 12px; padding: 24px 0; }
+  .title { grid-column: 1; }
+  .title strong { font-size: 21px; line-height: 1.08; overflow-wrap: anywhere; }
+  .row > span:not(.arrow) { grid-column: 1 / -1; min-width: 0; padding-top: 12px; display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 12px; line-height: 1.45; }
+  .row > span:not(.arrow)::before { color: rgba(17,18,18,.46); font-size: 8px; letter-spacing: .12em; text-transform: uppercase; }
+  .row > span:nth-of-type(1)::before { content: "Date"; }
+  .row > span:nth-of-type(2)::before { content: "Victim"; }
+  .row > span:nth-of-type(3)::before { content: "Status"; }
+  .arrow { grid-column: 2; grid-row: 1; width: 44px; height: 44px; display: flex; align-items: center; justify-content: flex-end; }
+  .empty { padding: 44px 0; }
+}
