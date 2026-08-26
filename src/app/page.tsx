@@ -45,6 +45,24 @@ export default async function HomePage() {
       <div className={styles.heroMeta}><span className={styles.heroBadge}>N</span><p>Truth is shared. Judgment is personal.</p></div>
     </section>
 
+    <section className={styles.redStrip} aria-label="Phosphoros principles">
+      <div className={styles.redStripStatement}>
+        <p>NOTHING HIDDEN.<br />NOTHING DECIDED FOR YOU.</p>
+      </div>
+      <div className={styles.redStripItem}>
+        <strong>PUBLIC</strong>
+        <span>All sources are public.</span>
+      </div>
+      <div className={styles.redStripItem}>
+        <strong>VISIBLE</strong>
+        <span>Missing information stays visible.</span>
+      </div>
+      <div className={styles.redStripItem}>
+        <strong>OPEN</strong>
+        <span>Contradictions remain on display.</span>
+      </div>
+    </section>
+
     <section className={styles.intro}><div className={styles.transitionMark}><Mark /></div><div className={styles.introInner}><h2>THE SAME EVIDENCE<br />FOR EVERYONE.</h2><p>All sources are public. Missing information stays visible.<br />Contradictions remain on display.<br />You see the record exactly as it is.</p></div></section>
 
     <section className={styles.cases}>
