@@ -78,6 +78,17 @@ export default async function HomePage() {
       <section className={styles.intro}>
         <div className={styles.transitionMark}>
           <Mark />
+
+        <div className={styles.heroImageWrap}>
+
+</div>
+<img
+  src="/images/personbehind.png"
+  alt="Blurred figure behind frosted glass"
+  className={styles.heroImage}
+/>
+        
+
         </div>
 
         <div className={styles.introInner}>
