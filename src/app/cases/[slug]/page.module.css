@@ -39,7 +39,7 @@
   max-width: 1080px;
   margin: 28px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(54px, 7.5vw, 108px);
+  font-size: var(--display-page);
   font-weight: var(--font-display-weight);
   line-height: 0.92;
   letter-spacing: -0.055em;
@@ -186,7 +186,7 @@
   max-width: 460px;
   margin: 24px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(38px, 4.5vw, 62px);
+  font-size: var(--display-section);
   font-weight: var(--font-display-weight);
   line-height: 0.98;
   letter-spacing: -0.04em;
@@ -224,7 +224,7 @@
   }
 
   .hero h1 {
-    font-size: clamp(46px, 15vw, 64px);
+    font-size: var(--display-page);
   }
 
   .statusGrid {

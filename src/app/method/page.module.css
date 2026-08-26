@@ -59,7 +59,7 @@
 .steps h2 {
   margin: 70px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(28px, 3vw, 40px);
+  font-size: clamp(26px, 2.6vw, 36px);
   font-weight: var(--font-display-weight);
   line-height: 1;
   text-transform: capitalize;
@@ -93,7 +93,7 @@
   max-width: 980px;
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(48px, 6vw, 82px);
+  font-size: var(--display-statement);
   font-weight: var(--font-display-weight);
   line-height: 0.97;
   letter-spacing: -0.045em;
@@ -131,6 +131,6 @@
   }
 
   .statement h2 {
-    font-size: 44px;
+    font-size: var(--display-statement);
   }
 }
