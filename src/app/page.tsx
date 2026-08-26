@@ -31,8 +31,9 @@ export default async function HomePage() {
   const preview = cases[0];
 
   return <main className={styles.page}>
+    <Header />
+
     <section className={styles.hero}>
-      <Header />
       <div className={styles.heroInner}>
         <div className={styles.heroCopy}>
           <h1>SEE EVERYTHING.<br />DECIDE FOR<br />YOURSELF.</h1>
