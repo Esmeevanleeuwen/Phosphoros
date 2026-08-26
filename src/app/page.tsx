@@ -33,9 +33,9 @@ export default async function HomePage() {
   return <main className={styles.page}>
     <Header />
 
-    <section className={styles.hero}>
+    <section className={`${styles.hero} ${topStyles.heroAfterSticky}`}>
       <div className={styles.heroInner}>
-        <div className={styles.heroCopy}>
+        <div className={`${styles.heroCopy} ${topStyles.heroCopyLift}`}>
           <h1>SEE EVERYTHING.<br />DECIDE FOR<br />YOURSELF.</h1>
           <p>One public record. Every source.<br />No required conclusion.</p>
           <Link href="/record" className={styles.heroLink}>Enter the record <span>→</span></Link>
