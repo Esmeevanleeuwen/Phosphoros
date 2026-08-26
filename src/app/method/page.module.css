@@ -60,7 +60,7 @@
   margin: 70px 0 0;
   font-family: var(--font-display);
   font-size: clamp(28px, 3vw, 40px);
-  font-weight: 400;
+  font-weight: var(--font-display-weight);
   line-height: 1;
   text-transform: capitalize;
 }
@@ -94,7 +94,7 @@
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(48px, 6vw, 82px);
-  font-weight: 400;
+  font-weight: var(--font-display-weight);
   line-height: 0.97;
   letter-spacing: -0.045em;
 }
