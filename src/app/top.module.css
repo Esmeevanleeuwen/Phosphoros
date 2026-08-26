@@ -1,4 +1,4 @@
-.heroAfterSticky{min-height:722px!important}
+.heroAfterSticky{min-height:calc(100vh - 98px)!important}
 .heroCopyLift{transform:translateY(-24px)}
 .evidenceStrip{background:linear-gradient(110deg,#681713 0%,#7d211d 58%,#63130f 100%);color:#fff8f1;padding:64px clamp(44px,5.8vw,92px);border-bottom:1px solid rgba(255,248,241,.14)}
 .evidenceInner{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:minmax(360px,1.05fr) minmax(320px,.95fr);gap:clamp(56px,9vw,150px);align-items:center}
