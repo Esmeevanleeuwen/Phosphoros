@@ -35,7 +35,10 @@ export default async function HomePage() {
     .select(
       "id, slug, title, location, incident_date, public_date, victim_status, perpetrator_status, legal_status, consequence"
     )
-    .order("public_date", { ascending: false, nullsFirst: false })
+    .order("public_date", {
+      ascending: false,
+      nullsFirst: false,
+    })
     .limit(5);
 
   const cases = (data ?? []) as FeaturedCase[];
@@ -44,42 +47,48 @@ export default async function HomePage() {
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
-        <Header dark />
+        <Header />
 
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}>
+              PUBLIC RECORD / INDEPENDENT JUDGMENT
+            </p>
+
             <h1>
-              SEE EVERYTHING.
+              SEE
               <br />
-              DECIDE FOR YOURSELF.
+              EVERYTHING.
+              <br />
+              DECIDE FOR
+              <br />
+              YOURSELF.
             </h1>
 
-            <p>
+            <span className={styles.signalDot} />
+
+            <p className={styles.heroDescription}>
               One public record. Every source.
               <br />
               No required conclusion.
             </p>
 
             <Link href="/record" className={styles.heroLink}>
-              Enter the record <span>→</span>
+              <span>Enter the record</span>
+              <span>→</span>
             </Link>
           </div>
 
-          <div className={styles.heroSymbol}>
-            <Mark />
+          <div className={styles.heroImage}>
+            <img
+              src="https://i.postimg.cc/4dZzQGTB/personbehindglass.png"
+              alt=""
+            />
           </div>
         </div>
-
-        <p className={styles.heroNote}>
-          Truth is shared. Judgment is personal.
-        </p>
       </section>
 
       <section className={styles.intro}>
-        <div className={styles.transitionMark}>
-          <Mark />
-        </div>
-
         <div className={styles.introInner}>
           <h2>
             THE SAME EVIDENCE
@@ -199,7 +208,10 @@ export default async function HomePage() {
                 <div className={styles.sourceIcon} />
                 <div className={styles.sourceCopy}>
                   <strong>Consequence</strong>
-                  <span>{preview.consequence ?? "No final consequence publicly recorded"}</span>
+                  <span>
+                    {preview.consequence ??
+                      "No final consequence publicly recorded"}
+                  </span>
                 </div>
                 <small>STATUS</small>
               </div>
@@ -212,7 +224,10 @@ export default async function HomePage() {
             <div className={styles.judgment}>
               <span>PUBLIC RECORD</span>
               <h3>{preview.title}</h3>
-              <p>{preview.legal_status ?? "Legal status not yet publicly recorded."}</p>
+              <p>
+                {preview.legal_status ??
+                  "Legal status not yet publicly recorded."}
+              </p>
               <Link href={`/cases/${preview.slug}`}>View case →</Link>
             </div>
           </div>
@@ -240,7 +255,11 @@ export default async function HomePage() {
           Phosphoros opens the record.
         </p>
 
-        <a href="https://perspectief-beta.vercel.app" target="_blank" rel="noreferrer">
+        <a
+          href="https://perspectief-beta.vercel.app"
+          target="_blank"
+          rel="noreferrer"
+        >
           View context in Meridian <span>→</span>
         </a>
       </section>
