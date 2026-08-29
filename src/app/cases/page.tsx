@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import Header from "@/components/Header";
 import PageIntro from "@/components/PageIntro";
 import CaseBrowser from "@/components/CaseBrowser";
@@ -5,6 +7,15 @@ import SiteFooter from "@/components/SiteFooter";
 import { getAllCases } from "@/lib/phosphoros/cases";
 
 import styles from "./page.module.css";
+
+export const metadata: Metadata = {
+  title: "Openbare misdaaddossiers in Nederland",
+  description:
+    "Doorzoek openbare Nederlandse misdaaddossiers op stad, datum, soort misdaad en juridische uitkomst.",
+  alternates: {
+    canonical: "/cases",
+  },
+};
 
 export default async function CasesPage() {
   const cases = await getAllCases();
