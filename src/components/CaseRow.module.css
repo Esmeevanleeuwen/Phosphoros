@@ -1,9 +1,10 @@
 .row {
-  min-height: 132px;
+  min-height: 210px;
+  padding: 34px 0;
   display: grid;
-  grid-template-columns: minmax(300px, 1.6fr) minmax(420px, 1.4fr) 120px;
+  grid-template-columns: minmax(360px, 1.7fr) minmax(300px, 0.9fr) 120px;
   gap: clamp(28px, 4vw, 64px);
-  align-items: center;
+  align-items: start;
   border-bottom: 1px solid var(--line);
 }
 
@@ -16,10 +17,32 @@
 }
 
 .index {
-  padding-top: 4px;
+  padding-top: 28px;
   color: var(--red);
   font-size: 10px;
   letter-spacing: 0.1em;
+}
+
+.tags {
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.tags span {
+  padding: 5px 8px 4px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.tags span:last-child {
+  border-color: var(--line-strong);
+  color: var(--ink);
 }
 
 .identity h3 {
@@ -32,17 +55,31 @@
   overflow-wrap: anywhere;
 }
 
-.identity p {
-  margin: 9px 0 0;
+.summary {
+  max-width: 680px;
+  margin: 14px 0 0;
   color: var(--muted);
-  font-size: 10px;
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.location {
+  margin: 15px 0 0;
+  color: var(--faint);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .metadata {
-  margin: 0;
+  margin: 28px 0 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 28px;
 }
 
 .metadata div {
@@ -62,6 +99,13 @@
   font-size: 11px;
   line-height: 1.45;
   overflow-wrap: anywhere;
+}
+
+.metadata .currentStatus {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: var(--font-display-weight);
+  line-height: 1.2;
 }
 
 .link {
@@ -85,12 +129,13 @@
   .row {
     grid-template-columns: minmax(0, 1fr) 104px;
     gap: 24px;
-    padding: 28px 0;
+    padding: 30px 0;
   }
 
   .metadata {
     grid-column: 1;
     width: min(100%, 580px);
+    margin-top: 0;
     padding-left: 56px;
   }
 
@@ -109,6 +154,10 @@
   .identity {
     grid-template-columns: 28px minmax(0, 1fr);
     gap: 12px;
+  }
+
+  .index {
+    padding-top: 28px;
   }
 
   .identity h3 {

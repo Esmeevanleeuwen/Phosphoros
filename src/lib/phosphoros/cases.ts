@@ -5,8 +5,12 @@ export type PhosphorosCase = {
   slug: string;
   title: string;
   location: string | null;
+  city: string | null;
   incident_date: string | null;
   public_date: string | null;
+  crime_type: string | null;
+  legal_outcome: string | null;
+  court_level: string | null;
   victim_status: string | null;
   perpetrator_status: string | null;
   legal_status: string | null;
@@ -15,6 +19,7 @@ export type PhosphorosCase = {
   evidence_summary: string | null;
   unknowns: string | null;
   ecli: string | null;
+  source_level: string | null;
 };
 
 export async function getAllCases(): Promise<PhosphorosCase[]> {

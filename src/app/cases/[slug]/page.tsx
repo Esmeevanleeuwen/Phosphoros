@@ -5,7 +5,13 @@ import Header from "@/components/Header";
 import JudgmentPanel from "@/components/JudgmentPanel";
 import SiteFooter from "@/components/SiteFooter";
 import { getCaseBySlug } from "@/lib/phosphoros/cases";
-import { formatCaseDate } from "@/lib/phosphoros/format";
+import {
+  formatCaseDate,
+  getCaseLocation,
+  getCaseSummary,
+  getCaseTitle,
+  getCurrentDefendantStatus,
+} from "@/lib/phosphoros/format";
 
 import styles from "./page.module.css";
 
@@ -15,9 +21,13 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
 
   if (!item) notFound();
 
+  const title = getCaseTitle(item);
+  const currentStatus = getCurrentDefendantStatus(item);
+
   const facts = [
     item.known_facts && ["Known facts", item.known_facts],
-    item.evidence_summary && ["Evidence", item.evidence_summary],
+    item.evidence_summary && ["Evidence summary", item.evidence_summary],
+    item.consequence && ["Consequence or sentence", item.consequence],
     item.unknowns && ["What remains unknown", item.unknowns],
     item.ecli && ["Court record", item.ecli],
   ].filter(Boolean) as string[][];
@@ -30,20 +40,56 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         <div className={styles.heroInner}>
           <Link href="/cases" className={styles.back}>← All cases</Link>
           <p>Phosphoros / Case record</p>
-          <h1>{item.title}</h1>
-          <span>{item.location ?? "Location not recorded"}</span>
+          <h1>{title}</h1>
+          <p className={styles.heroSummary}>{getCaseSummary(item)}</p>
+          <span>{getCaseLocation(item)}</span>
         </div>
       </section>
 
       <section className={styles.statusSection}>
-        <dl className={styles.statusGrid}>
-          <div><dt>Incident</dt><dd>{formatCaseDate(item.incident_date, true)}</dd></div>
-          <div><dt>Public record</dt><dd>{formatCaseDate(item.public_date, true)}</dd></div>
-          <div><dt>Victim status</dt><dd>{item.victim_status ?? "Unknown"}</dd></div>
-          <div><dt>Perpetrator status</dt><dd>{item.perpetrator_status ?? "Unknown"}</dd></div>
-          <div><dt>Legal status</dt><dd>{item.legal_status ?? "Unknown"}</dd></div>
-          <div><dt>Consequence</dt><dd>{item.consequence ?? "Unknown"}</dd></div>
-        </dl>
+        <div className={styles.statusInner}>
+          <article className={styles.currentStatus}>
+            <header>
+              <span>Status of the suspect / accused</span>
+              <span>Current legal position</span>
+            </header>
+
+            <div className={styles.statusBody}>
+              <div className={styles.statusHeading}>
+                <span aria-hidden="true" />
+                <div>
+                  <p>Current status</p>
+                  <h2>{currentStatus}</h2>
+                </div>
+              </div>
+
+              <dl className={styles.statusMeta}>
+                <div>
+                  <dt>Legal outcome</dt>
+                  <dd>{item.legal_outcome ?? "Unknown"}</dd>
+                </div>
+                <div>
+                  <dt>Stage of proceedings</dt>
+                  <dd>{item.court_level ?? "Unknown"}</dd>
+                </div>
+              </dl>
+
+              <div className={styles.legalMeaning}>
+                <p>What this means legally</p>
+                <span>{item.legal_status ?? "No further legal status is publicly recorded."}</span>
+              </div>
+            </div>
+          </article>
+
+          <dl className={styles.statusGrid}>
+            <div><dt>Incident</dt><dd>{formatCaseDate(item.incident_date, true)}</dd></div>
+            <div><dt>Public record</dt><dd>{formatCaseDate(item.public_date, true)}</dd></div>
+            <div><dt>City / region</dt><dd>{getCaseLocation(item)}</dd></div>
+            <div><dt>Type of crime</dt><dd>{item.crime_type ?? "Unknown"}</dd></div>
+            <div><dt>Victim status</dt><dd>{item.victim_status ?? "Unknown"}</dd></div>
+            <div><dt>Source level</dt><dd>{item.source_level ?? "Unknown"}</dd></div>
+          </dl>
+        </div>
       </section>
 
       <section className={styles.record}>
