@@ -32,7 +32,7 @@ export function getCaseSummary(item: PhosphorosCase) {
 function hasDescriptiveTitle(title: string) {
   return (
     title.trim().split(/\s+/).length >= 4 &&
-    /convict|acquit|abuse|assault|rape|attempt|arson|robbery|theft|fraud|vandal|misbruik|seksueel|verkrach|aanrand|ontucht|poging|veroordeel|vrijspraak|brandsticht|overval|diefstal|fraude|verniel/i.test(
+    /convict|acquit|abuse|assault|rape|attempt|arson|robbery|theft|fraud|vandal|misbruik|seksueel|verkrach|aanrand|ontucht|poging|veroordeel|vrijspraak|brand|overval|dief|gestol|fraude|phish|oplicht|verniel/i.test(
       title,
     )
   );
@@ -77,6 +77,9 @@ export function getCurrentDefendantStatus(item: PhosphorosCase) {
     investigated: "Suspect; investigation ongoing",
     suspect: "Suspect",
     acquitted: "Acquitted",
+    "one unidentified suspect sought": "One unidentified suspect sought; investigation ongoing",
+    "unidentified suspects sought": "Unidentified suspects sought; investigation ongoing",
+    "three unidentified suspects sought": "Three unidentified suspects sought; investigation ongoing",
   };
 
   if (raw && raw !== "unknown") return translated[raw] || item.perpetrator_status;

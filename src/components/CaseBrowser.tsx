@@ -26,7 +26,7 @@ function getPublicYear(item: PhosphorosCase) {
 
 function getDateValue(item: PhosphorosCase) {
   const date = item.public_date || item.incident_date;
-  return date ? new Date(`${date}T12:00:00`).getTime() : 0;
+  return date ? new Date(`${date}T12:00:00`).getTime() : null;
 }
 
 export default function CaseBrowser({ items }: CaseBrowserProps) {
@@ -53,7 +53,14 @@ export default function CaseBrowser({ items }: CaseBrowserProps) {
       .filter((item) => crimeType === ALL || item.crime_type === crimeType)
       .filter((item) => legalOutcome === ALL || item.legal_outcome === legalOutcome)
       .sort((a, b) => {
-        const difference = getDateValue(b) - getDateValue(a);
+        const aDate = getDateValue(a);
+        const bDate = getDateValue(b);
+
+        if (aDate === null && bDate === null) return 0;
+        if (aDate === null) return 1;
+        if (bDate === null) return -1;
+
+        const difference = bDate - aDate;
         return order === "newest" ? difference : -difference;
       });
   }, [city, crimeType, items, legalOutcome, order, year]);
