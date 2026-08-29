@@ -8,6 +8,8 @@ import { getAllCases } from "@/lib/phosphoros/cases";
 
 import styles from "./page.module.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Openbare misdaaddossiers in Nederland",
   description:
