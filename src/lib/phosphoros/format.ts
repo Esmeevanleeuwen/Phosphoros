@@ -32,7 +32,7 @@ export function getCaseSummary(item: PhosphorosCase) {
 function hasDescriptiveTitle(title: string) {
   return (
     title.trim().split(/\s+/).length >= 4 &&
-    /convict|acquit|abuse|assault|rape|attempt|arson|robbery|theft|fraud|vandal|misbruik|seksueel|verkrach|aanrand|ontucht|poging|veroordeel|vrijspraak|brand|overval|dief|gestol|fraude|phish|oplicht|verniel/i.test(
+    /convict|acquit|abuse|assault|rape|attempt|arson|robbery|theft|fraud|vandal|misbruik|seksueel|verkrach|aanrand|ontucht|poging|veroordeel|vrijspraak|brand|overval|dief|gestol|fraude|phish|oplicht|verniel|moord|dood|schiet|wurg|smor|geweld|mishandel|overleden|murder|homicide|shoot|strangl/i.test(
       title,
     )
   );
