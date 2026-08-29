@@ -34,7 +34,7 @@ export default function CaseBrowser({ items }: CaseBrowserProps) {
   const [year, setYear] = useState(ALL);
   const [crimeType, setCrimeType] = useState(ALL);
   const [legalOutcome, setLegalOutcome] = useState(ALL);
-  const [order, setOrder] = useState("newest");
+  const [order, setOrder] = useState("oldest");
 
   const options = useMemo(
     () => ({
@@ -65,7 +65,7 @@ export default function CaseBrowser({ items }: CaseBrowserProps) {
     setYear(ALL);
     setCrimeType(ALL);
     setLegalOutcome(ALL);
-    setOrder("newest");
+    setOrder("oldest");
   }
 
   return (
@@ -75,7 +75,7 @@ export default function CaseBrowser({ items }: CaseBrowserProps) {
           <p className={styles.eyebrow}>Filter the public record</p>
           <h2>Find a case</h2>
         </div>
-        <button type="button" onClick={resetFilters} disabled={activeFilters === 0 && order === "newest"}>
+        <button type="button" onClick={resetFilters} disabled={activeFilters === 0 && order === "oldest"}>
           Clear filters{activeFilters > 0 ? ` (${activeFilters})` : ""}
         </button>
       </div>
@@ -124,8 +124,8 @@ export default function CaseBrowser({ items }: CaseBrowserProps) {
         <label>
           <span>Order by date</span>
           <select value={order} onChange={(event) => setOrder(event.target.value)}>
-            <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
+            <option value="newest">Newest first</option>
           </select>
         </label>
       </div>

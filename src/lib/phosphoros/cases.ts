@@ -26,7 +26,7 @@ export async function getAllCases(): Promise<PhosphorosCase[]> {
   const { data, error } = await supabase
     .from("phosphoros_cases")
     .select("*")
-    .order("public_date", { ascending: false });
+    .order("public_date", { ascending: true });
 
   if (error) {
     console.error("Error loading Phosphoros cases:", error);

@@ -32,7 +32,7 @@ export function getCaseSummary(item: PhosphorosCase) {
 function hasDescriptiveTitle(title: string) {
   return (
     title.trim().split(/\s+/).length >= 4 &&
-    /convict|acquit|abuse|assault|rape|attempt|misbruik|seksueel|verkrach|aanrand|ontucht|poging|veroordeel|vrijspraak/i.test(
+    /convict|acquit|abuse|assault|rape|attempt|arson|robbery|theft|fraud|vandal|misbruik|seksueel|verkrach|aanrand|ontucht|poging|veroordeel|vrijspraak|brandsticht|overval|diefstal|fraude|verniel/i.test(
       title,
     )
   );
@@ -80,6 +80,10 @@ export function getCurrentDefendantStatus(item: PhosphorosCase) {
   };
 
   if (raw && raw !== "unknown") return translated[raw] || item.perpetrator_status;
+
+  if (raw === "unknown" && item.legal_outcome === "Onderzoek loopt") {
+    return "No identified suspect; investigation ongoing";
+  }
 
   const fromOutcome: Record<string, string> = {
     Veroordeeld: "Convicted",
