@@ -25,8 +25,7 @@ function getPublicYear(item: PhosphorosCase) {
 }
 
 function getDateValue(item: PhosphorosCase) {
-  const date = item.public_date || item.incident_date;
-  return date ? new Date(`${date}T12:00:00`).getTime() : null;
+  return item.public_date ? new Date(`${item.public_date}T12:00:00`).getTime() : null;
 }
 
 export default function CaseBrowser({ items }: CaseBrowserProps) {
@@ -34,7 +33,7 @@ export default function CaseBrowser({ items }: CaseBrowserProps) {
   const [year, setYear] = useState(ALL);
   const [crimeType, setCrimeType] = useState(ALL);
   const [legalOutcome, setLegalOutcome] = useState(ALL);
-  const [order, setOrder] = useState("oldest");
+  const [order, setOrder] = useState("newest");
 
   const options = useMemo(
     () => ({
@@ -72,7 +71,7 @@ export default function CaseBrowser({ items }: CaseBrowserProps) {
     setYear(ALL);
     setCrimeType(ALL);
     setLegalOutcome(ALL);
-    setOrder("oldest");
+    setOrder("newest");
   }
 
   return (
@@ -82,7 +81,7 @@ export default function CaseBrowser({ items }: CaseBrowserProps) {
           <p className={styles.eyebrow}>Filter the public record</p>
           <h2>Find a case</h2>
         </div>
-        <button type="button" onClick={resetFilters} disabled={activeFilters === 0 && order === "oldest"}>
+        <button type="button" onClick={resetFilters} disabled={activeFilters === 0 && order === "newest"}>
           Clear filters{activeFilters > 0 ? ` (${activeFilters})` : ""}
         </button>
       </div>
@@ -129,10 +128,10 @@ export default function CaseBrowser({ items }: CaseBrowserProps) {
         </label>
 
         <label>
-          <span>Order by date</span>
+          <span>Order by latest update</span>
           <select value={order} onChange={(event) => setOrder(event.target.value)}>
-            <option value="oldest">Oldest first</option>
             <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
           </select>
         </label>
       </div>
