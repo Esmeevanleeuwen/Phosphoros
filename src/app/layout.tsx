@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     template: "%s | Phosphoros",
   },
   description: SITE_DESCRIPTION,
+  verification: {
+    google: "uHaORBiirQoaPnKD4KjE5xG_cHSpSdn7-bV60hVyuLo",
+  },
   alternates: {
     canonical: "/",
   },
