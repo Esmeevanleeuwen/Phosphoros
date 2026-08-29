@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import Header from "@/components/Header";
@@ -7,6 +8,15 @@ import SiteFooter from "@/components/SiteFooter";
 import { getAllCases } from "@/lib/phosphoros/cases";
 
 import styles from "./page.module.css";
+
+export const metadata: Metadata = {
+  title: "Het openbare dossier",
+  description:
+    "Een controleerbaar overzicht van feiten, bronnen, ontbrekende informatie en juridische uitkomsten.",
+  alternates: {
+    canonical: "/record",
+  },
+};
 
 const standards = [
   ["01", "Source", "The origin of every public claim remains visible."],
