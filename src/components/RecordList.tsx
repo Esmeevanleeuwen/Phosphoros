@@ -14,8 +14,8 @@ export default function RecordList({ items, emptyMessage = "No public records av
       <div className={styles.labels} aria-hidden="true">
         <span>Case</span>
         <div>
-          <span>Date</span>
-          <span>Victim</span>
+          <span>Public date</span>
+          <span>Court</span>
           <span>Status</span>
         </div>
         <span>Open</span>

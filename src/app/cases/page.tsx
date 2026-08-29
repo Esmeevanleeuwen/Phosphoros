@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import PageIntro from "@/components/PageIntro";
-import RecordList from "@/components/RecordList";
+import CaseBrowser from "@/components/CaseBrowser";
 import SiteFooter from "@/components/SiteFooter";
 import { getAllCases } from "@/lib/phosphoros/cases";
 
@@ -26,7 +26,7 @@ export default async function CasesPage() {
             <span>{String(cases.length).padStart(2, "0")}</span>
             <p>Cases currently available in the public record.</p>
           </div>
-          <RecordList items={cases} emptyMessage="No public records found." />
+          <CaseBrowser items={cases} />
         </div>
       </section>
 
