@@ -1,8 +1,19 @@
+import type { Metadata } from "next";
+
 import Header from "@/components/Header";
 import PageIntro from "@/components/PageIntro";
 import SiteFooter from "@/components/SiteFooter";
 
 import styles from "./page.module.css";
+
+export const metadata: Metadata = {
+  title: "Werkwijze en broncontrole",
+  description:
+    "Lees hoe Phosphoros bronnen, vastgestelde feiten, tegenstrijdigheden en ontbrekende informatie van elkaar scheidt.",
+  alternates: {
+    canonical: "/method",
+  },
+};
 
 const steps = [
   ["01", "Separate", "Keep sources, claims and judgments distinct."],
