@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -5,6 +6,7 @@ import Header from "@/components/Header";
 import JudgmentPanel from "@/components/JudgmentPanel";
 import SiteFooter from "@/components/SiteFooter";
 import { getCaseBySlug } from "@/lib/phosphoros/cases";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import {
   formatCaseDate,
   getCaseLocation,
@@ -15,7 +17,58 @@ import {
 
 import styles from "./page.module.css";
 
-export default async function CasePage({ params }: { params: Promise<{ slug: string }> }) {
+type CasePageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({
+  params,
+}: CasePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const item = await getCaseBySlug(slug);
+
+  if (!item) {
+    return {
+      title: "Dossier niet gevonden",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  const title = getCaseTitle(item);
+  const description = getCaseSummary(item);
+  const url = `${SITE_URL}/cases/${item.slug}`;
+  const publishedTime = item.public_date
+    ? `${item.public_date}T12:00:00.000Z`
+    : undefined;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      type: "article",
+      locale: "nl_NL",
+      url,
+      siteName: SITE_NAME,
+      title,
+      description,
+      publishedTime,
+      modifiedTime: publishedTime,
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
+  };
+}
+
+export default async function CasePage({ params }: CasePageProps) {
   const { slug } = await params;
   const item = await getCaseBySlug(slug);
 
@@ -23,6 +76,30 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
 
   const title = getCaseTitle(item);
   const currentStatus = getCurrentDefendantStatus(item);
+  const summary = getCaseSummary(item);
+  const canonicalUrl = `${SITE_URL}/cases/${item.slug}`;
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description: summary,
+    inLanguage: "nl-NL",
+    datePublished: item.public_date || undefined,
+    dateModified: item.public_date || undefined,
+    mainEntityOfPage: canonicalUrl,
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    about: [item.crime_type, item.legal_outcome].filter(Boolean),
+    contentLocation: item.city
+      ? {
+          "@type": "Place",
+          name: item.city,
+        }
+      : undefined,
+  };
 
   const facts = [
     item.known_facts && ["Known facts", item.known_facts],
@@ -34,6 +111,12 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
 
   return (
     <main className={styles.page}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
 
       <section className={styles.hero}>
