@@ -102,12 +102,22 @@ export default async function CasePage({ params }: CasePageProps) {
   };
 
   const facts = [
-    item.known_facts && ["Known facts", item.known_facts],
-    item.evidence_summary && ["Evidence summary", item.evidence_summary],
-    item.consequence && ["Consequence or sentence", item.consequence],
-    item.unknowns && ["What remains unknown", item.unknowns],
-    item.ecli && ["Court record", item.ecli],
-  ].filter(Boolean) as string[][];
+    item.known_facts && { label: "Known facts", body: item.known_facts },
+    item.connections_summary && { label: "Connections and context", body: item.connections_summary },
+    item.first_signal && { label: "First public signal", body: item.first_signal },
+    item.earlier_signals && { label: "Earlier signals", body: item.earlier_signals },
+    item.evidence_summary && { label: "Evidence summary", body: item.evidence_summary },
+    item.evidence_status && { label: "Evidence status", body: item.evidence_status },
+    item.consequence && { label: "Consequence or sentence", body: item.consequence },
+    item.occupational_ban && { label: "Occupational restriction", body: item.occupational_ban },
+    item.unknowns && { label: "What remains unknown", body: item.unknowns },
+    item.ecli && { label: "Court record", body: item.ecli },
+    item.source_url && {
+      label: "Primary source",
+      body: item.source_title ?? "Open the primary source",
+      href: item.source_url,
+    },
+  ].filter(Boolean) as Array<{ label: string; body: string; href?: string }>;
 
   return (
     <main className={styles.page}>
@@ -171,6 +181,9 @@ export default async function CasePage({ params }: CasePageProps) {
             <div><dt>Type of crime</dt><dd>{item.crime_type ?? "Unknown"}</dd></div>
             <div><dt>Victim status</dt><dd>{item.victim_status ?? "Unknown"}</dd></div>
             <div><dt>Source level</dt><dd>{item.source_level ?? "Unknown"}</dd></div>
+            <div><dt>School role</dt><dd>{item.school_role ?? "Not recorded"}</dd></div>
+            <div><dt>Other youth role</dt><dd>{item.other_youth_role ?? "None publicly recorded"}</dd></div>
+            <div><dt>Last verified</dt><dd>{formatCaseDate(item.last_verified_at, true)}</dd></div>
           </dl>
         </div>
       </section>
@@ -183,13 +196,13 @@ export default async function CasePage({ params }: CasePageProps) {
           </aside>
 
           <div className={styles.facts}>
-            {facts.map(([label, body], index) => (
+            {facts.map(({ label, body, href }, index) => (
               <article key={label}>
                 <header>
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <h2>{label}</h2>
                 </header>
-                <p>{body}</p>
+                {href ? <p><a href={href} target="_blank" rel="noreferrer">{body} ↗</a></p> : <p>{body}</p>}
               </article>
             ))}
 
